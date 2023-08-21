@@ -1,10 +1,31 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './shared/pages/home/home.component';
+import { AccountComponent } from './shared/pages/account/account.component';
+import { CanActiveGuard } from './shared/guards/can-active.guard';
+import { CanDeactiveGuard } from './shared/guards/can-deactive.guard';
+import { CanLoadGuard } from './shared/guards/can-load.guard';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent,
+  },
+  {
+    path: 'account',
+    component: AccountComponent,
+    canActivate: [CanActiveGuard],
+    canDeactivate: [CanDeactiveGuard],
+  },
+  {
+    path: 'core',
+    loadChildren: () => import('./core/core.module').then((m) => m.CoreModule),
+    canLoad: [CanLoadGuard],
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
